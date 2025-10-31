@@ -1,0 +1,71 @@
+<resources>
+    <!-- ابعاد استاندارد -->
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+    <dimen name="margin_xlarge">32dp</dimen>
+    
+    <!-- ابعاد پدینگ -->
+    <dimen name="padding_small">4dp</dimen>
+    <dimen name="padding_medium">8dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+    <dimen name="padding_xlarge">24dp</dimen>
+    
+    <!-- ابعاد متن -->
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_medium">14sp</dimen>
+    <dimen name="text_size_large">16sp</dimen>
+    <dimen name="text_size_xlarge">18sp</dimen>
+    <dimen name="text_size_xxlarge">24sp</dimen>
+    <dimen name="text_size_title">36sp</dimen>
+    
+    <!-- ابعاد رابط کاربری بازی -->
+    <dimen name="hud_margin">16dp</dimen>
+    <dimen name="hud_text_size">14sp</dimen>
+    <dimen name="hud_icon_size">24dp</dimen>
+    <dimen name="health_bar_width">200dp</dimen>
+    <dimen name="health_bar_height">12dp</dimen>
+    <dimen name="joystick_size">120dp</dimen>
+    <dimen name="joystick_handle_size">48dp</dimen>
+    
+    <!-- ابعاد منو -->
+    <dimen name="menu_button_width">200dp</dimen>
+    <dimen name="menu_button_height">48dp</dimen>
+    <dimen name="menu_button_margin">12dp</dimen>
+    <dimen name="menu_card_width">280dp</dimen>
+    <dimen name="menu_card_corner_radius">16dp</dimen>
+    
+    <!-- ابعاد کارت‌ها -->
+    <dimen name="card_elevation">8dp</dimen>
+    <dimen name="card_corner_radius">12dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    
+    <!-- ابعاد آیکون‌ها -->
+    <dimen name="icon_size_small">16dp</dimen>
+    <dimen name="icon_size_medium">24dp</dimen>
+    <dimen name="icon_size_large">32dp</dimen>
+    <dimen name="icon_size_xlarge">48dp</dimen>
+    
+    <!-- ابعاد اشیاء بازی -->
+    <dimen name="ship_size">80dp</dimen>
+    <dimen name="planet_size_min">120dp</dimen>
+    <dimen name="planet_size_max">200dp</dimen>
+    <dimen name="enemy_size_small">50dp</dimen>
+    <dimen name="enemy_size_medium">70dp</dimen>
+    <dimen name="enemy_size_large">90dp</dimen>
+    <dimen name="powerup_size">40dp</dimen>
+    
+    <!-- ابعاد جلوه‌های بصری -->
+    <dimen name="explosion_size_small">60dp</dimen>
+    <dimen name="explosion_size_medium">120dp</dimen>
+    <dimen name="explosion_size_large">200dp</dimen>
+    <dimen name="particle_size_min">2dp</dimen>
+    <dimen name="particle_size_max">10dp</dimen>
+    
+    <!-- ابعاد فضای خالی -->
+    <dimen name="spacing_xsmall">2dp</dimen>
+    <dimen name="spacing_small">4dp</dimen>
+    <dimen name="spacing_medium">8dp</dimen>
+    <dimen name="spacing_large">12dp</dimen>
+    <dimen name="spacing_xlarge">16dp</dimen>
+</resources>
