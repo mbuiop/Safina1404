@@ -1,4 +1,4 @@
-name: Build Android Game APK
+name: Build Android Game
 
 on:
 push:
@@ -7,37 +7,33 @@ branches: [ main, master ]
 jobs:
 build:
 runs-on: ubuntu-latest
-name: Build Android Game
+name: Build Android APK
 
-```
+
 steps:
-  - name: Checkout code
+  - name: Checkout repository
     uses: actions/checkout@v4
 
-  - name: Setup JDK 17
+  - name: Set up JDK 17
     uses: actions/setup-java@v4
     with:
       java-version: "17"
       distribution: "temurin"
 
-  - name: Setup Android SDK
+  - name: Set up Android SDK
     uses: android-actions/setup-android@v3
     with:
       api-level: 34
       build-tools: 34.0.0
 
-  # اگر فایل gradlew در پوشه android قرار دارد،
-  # این دو مرحله را تغییر بده به:
-  # run: cd android && chmod +x gradlew
+  # If gradlew is inside android folder, change next two commands accordingly.
   - name: Give execute permission to gradlew
     run: chmod +x gradlew
 
-  # اگر gradlew در پوشه android است:
-  # run: cd android && ./gradlew assembleDebug
   - name: Build Debug APK
     run: ./gradlew assembleDebug
 
-  - name: Upload Debug APK
+  - name: Upload APK
     uses: actions/upload-artifact@v4
     with:
       name: game-debug
