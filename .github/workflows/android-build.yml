@@ -1,0 +1,34 @@
+name: Simple Unity Setup
+
+on: [push]
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Create Basic Files
+      run: |
+        # ایجاد پوشه
+        mkdir -p Packages
+        mkdir -p ProjectSettings
+        
+        # ایجاد فایل manifest
+        echo '{' > Packages/manifest.json
+        echo '  "dependencies": {' >> Packages/manifest.json
+        echo '    "com.unity.render-pipelines.universal": "14.0.8"' >> Packages/manifest.json
+        echo '  }' >> Packages/manifest.json
+        echo '}' >> Packages/manifest.json
+        
+        # ایجاد فایل نسخه
+        echo 'm_EditorVersion: 2022.3.21f1' > ProjectSettings/ProjectVersion.txt
+        
+        echo "✅ فایل‌ها ایجاد شدند"
+        
+    - name: Verify Files
+      run: |
+        echo "📄 فایل‌های ایجاد شده:"
+        cat Packages/manifest.json
+        echo "---"
+        cat ProjectSettings/ProjectVersion.txt
