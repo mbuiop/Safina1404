@@ -1,31 +1,44 @@
-name: Build Android Game with Permissions
+name: Build Android Game APK
 
 on:
   push:
     branches: [main]
 
 jobs:
-  build-with-permissions:
+  build-android:
+    name: Build Android APK
     runs-on: ubuntu-latest
     
-    permissions:
-      contents: write
-      packages: read
-      actions: read
-      
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Create APK File
-      run: |
-        mkdir -p android-build
-        echo "این فایل APK تستی هست" > android-build/game-test.apk
-        echo "نسخه 1.0.0" > android-build/version.txt
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
         
-    - name: Upload Real APK
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      
+    - name: Make gradlew executable
+      run: chmod +x ./gradlew
+      
+    - name: Build Debug APK
+      run: |
+        ./gradlew assembleDebug
+        echo "✅ APK ساخته شد!"
+        
+    - name: List APK files
+      run: |
+        find . -name "*.apk" -type f
+        echo "📁 محتوای پوشه app:"
+        ls -la app/build/outputs/apk/
+        
+    - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: android-game-apk
-        path: android-build/
+        path: app/build/outputs/apk/**/*.apk
         retention-days: 30
