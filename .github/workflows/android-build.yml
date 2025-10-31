@@ -1,93 +1,79 @@
-
-name: Build Heavy 3D Game
+name: Build Real Android Game
 
 on:
   push:
     branches: [main]
 
 jobs:
-  build-heavy-game:
+  build:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
     
     steps:
-    - name: Checkout Heavy Game Files
+    - name: Checkout code
       uses: actions/checkout@v4
+      
+    - name: Setup Java
+      uses: actions/setup-java@v4
       with:
-        lfs: true
+        java-version: '17'
+        distribution: 'temurin'
         
-    - name: Analyze Game Structure
+    - name: Setup Android
+      uses: android-actions/setup-android@v3
+      
+    - name: Fix project structure
       run: |
-        echo "🎮 Analyzing Heavy Game Structure..."
-        echo "📦 Total size:"
-        du -sh .
-        echo "📁 File types:"
-        find . -type f -name "*.*" | sed 's/.*\.//' | sort | uniq -c | sort -nr | head -10
+        # ایجاد پوشه‌های ضروری
+        mkdir -p app/src/main/java/com/yourcompany/game
+        mkdir -p app/src/main/res/values
         
-    - name: Setup Heavy Build Environment
+        # کپی فایل‌های جاوا به محل صحیح
+        cp *.java app/src/main/java/com/yourcompany/game/ 2>/dev/null || true
+        
+    - name: Create missing Android files
       run: |
-        # برای بازی‌های سنگین نیاز به فضای بیشتر داریم
-        sudo apt-get update
-        sudo apt-get install -y unzip zip tree
+        # ایجاد AndroidManifest.xml
+        cat > app/src/main/AndroidManifest.xml << 'EOF'
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.yourcompany.game">
+    
+    <uses-permission android:name="android.permission.INTERNET" />
+    
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Safina 3D Game"
+        android:theme="@style/AppTheme">
         
-    - name: Detect Game Engine
-      id: detect-engine
-      run: |
-        if find . -name "*.cs" | grep -q . && find . -name "Assets" | grep -q .; then
-          echo "engine=unity" >> $GITHUB_OUTPUT
-          echo "🎯 Detected: Unity 3D Game"
-        elif find . -name "*.java" | grep -q . && find . -name "build.gradle" | grep -q .; then
-          echo "engine=android" >> $GITHUB_OUTPUT  
-          echo "🎯 Detected: Android Studio Game"
-        else
-          echo "engine=unknown" >> $GITHUB_OUTPUT
-          echo "❓ Unknown Game Engine"
-        fi
-        
-    - name: Build Based on Engine
-      run: |
-        if [ "${{ steps.detect-engine.outputs.engine }}" = "unity" ]; then
-          echo "🏗️ Building Unity 3D Game..."
-          # ساخت یونیتی - نیاز به لایسنس داره
-          echo "Unity build requires license - creating APK manually"
-          
-        elif [ "${{ steps.detect-engine.outputs.engine }}" = "android" ]; then
-          echo "🏗️ Building Android Game..."
-          # ساخت اندروید
-          chmod +x gradlew 2>/dev/null || true
-          ./gradlew assembleDebug 2>/dev/null || gradle assembleDebug 2>/dev/null || echo "Build failed"
-        fi
-        
-    - name: Create Game Launcher APK
-      run: |
-        echo "📱 Creating Game Launcher APK..."
-        mkdir -p game-launcher
-        
-        # ساخت یک لانچر برای بازی
-        cat > game-launcher/README.txt << 'EOF'
-🎮 GAME LAUNCHER
-
-This APK contains your heavy 3D game with high graphics.
-All game files are included in this package.
-
-Installation:
-1. Install this APK
-2. Game will extract and run all assets
-3. Enjoy your high-quality 3D game!
-
-Game Features:
-- High Graphics 3D
-- Advanced Game Systems
-- Premium Quality
+        <activity
+            android:name="com.yourcompany.game.GameEngine"
+            android:exported="true"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
 EOF
+
+        # ایجاد فایل strings.xml
+        cat > app/src/main/res/values/strings.xml << 'EOF'
+<resources>
+    <string name="app_name">Safina 3D Game</string>
+</resources>
+EOF
+
+    - name: Build APK
+      run: |
+        echo "🏗️ ساختن APK واقعی..."
+        chmod +x gradlew
+        ./gradlew assembleDebug --stacktrace
         
-        # بسته‌بندی بازی
-        zip -r game-launcher/heavy-game.apk . -x "*.git*" "*.github*"
-        echo "✅ Heavy Game APK Created!"
-        
-    - name: Upload Heavy Game APK
+    - name: Upload Real APK
       uses: actions/upload-artifact@v4
       with:
-        name: heavy-3d-game-apk
-        path: game-launcher/
-        compression-level: 0  # غیرفعال کردن فشرده‌سازی برای فایل‌های سنگین
+        name: safina-game-apk
+        path: app/build/outputs/apk/debug/*.apk
