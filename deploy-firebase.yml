@@ -1,0 +1,46 @@
+name: Deploy to Firebase App Distribution
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    name: Deploy to Firebase
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Build Release APK
+      run: |
+        chmod +x ./gradlew
+        ./gradlew assembleRelease
+      env:
+        ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
+    - name: Deploy to Firebase App Distribution
+      uses: wzieba/Firebase-Distribution-Github-Action@v1
+      with:
+        appId: ${{ secrets.FIREBASE_APP_ID }}
+        serviceCredentialsFile: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        groups: testers
+        file: app/build/outputs/apk/release/app-release.apk
+        releaseNotes: |
+          نسخه جدید SpaceShip Galaxy Wars
+          - بهبود عملکرد
+          - رفع باگ‌ها
+          - ویژگی‌های جدید
