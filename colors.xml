@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- رنگ‌های اصلی -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+    
+    <!-- رنگ‌های فضایی -->
+    <color name="space_dark">#FF0A0A2A</color>
+    <color name="space_blue">#FF1A1A4A</color>
+    <color name="space_purple">#FF2A1A5A</color>
+    <color name="space_deep_blue">#FF050525</color>
+    <color name="space_navy">#FF101040</color>
+    
+    <!-- رنگ‌های رابط کاربری -->
+    <color name="ui_primary">#FF00A8FF</color>
+    <color name="ui_secondary">#FF0097E6</color>
+    <color name="ui_accent">#FF7B68EE</color>
+    <color name="ui_background">#801A1A4A</color>
+    <color name="ui_surface">#CC2A2A5A</color>
+    <color name="ui_error">#FFFF5252</color>
+    <color name="ui_success">#FF4CAF50</color>
+    <color name="ui_warning">#FFFFC107</color>
+    <color name="ui_info">#FF2196F3</color>
+    
+    <!-- رنگ‌های سفینه -->
+    <color name="ship_primary">#FF00D4FF</color>
+    <color name="ship_secondary">#FF0099CC</color>
+    <color name="ship_accent">#FF66FFFF</color>
+    <color name="ship_engine">#FFFFA500</color>
+    <color name="ship_engine_glow">#80FF6600</color>
+    
+    <!-- رنگ‌های دشمنان -->
+    <color name="enemy_scout">#FFFF4444</color>
+    <color name="enemy_fighter">#FFFF8844</color>
+    <color name="enemy_bomber">#FFFF44FF</color>
+    <color name="enemy_elite">#FF8844FF</color>
+    <color name="enemy_core">#FFFFCCCC</color>
+    
+    <!-- رنگ‌های سیارات -->
+    <color name="planet_earth">#FF4CAF50</color>
+    <color name="planet_lava">#FFFF5722</color>
+    <color name="planet_ice">#FF2196F3</color>
+    <color name="planet_gas">#FFFFC107</color>
+    <color name="planet_toxic">#FF8BC34A</color>
+    
+    <!-- رنگ‌های قدرت‌افزایی -->
+    <color name="powerup_health">#FFFF5252</color>
+    <color name="powerup_shield">#FF2196F3</color>
+    <color name="powerup_speed">#FF4CAF50</color>
+    <color name="powerup_weapon">#FFFFC107</color>
+    <color name="powerup_coin">#FFFFD700</color>
+    <color name="powerup_multiplier">#FFE040FB</color>
+    
+    <!-- رنگ‌های جلوه‌های بصری -->
+    <color name="fx_explosion_primary">#FFFF9800</color>
+    <color name="fx_explosion_secondary">#FFFF5722</color>
+    <color name="fx_energy_primary">#FF00E5FF</color>
+    <color name="fx_energy_secondary">#FF2962FF</color>
+    <color name="fx_shield">#8066FFE6</color>
+    <color name="fx_black_hole">#FF6A1B9A</color>
+    
+    <!-- رنگ‌های متن -->
+    <color name="text_primary">#FFFFFFFF</color>
+    <color name="text_secondary">#FFB3B3B3</color>
+    <color name="text_disabled">#FF666666</color>
+    <color name="text_success">#FF4CAF50</color>
+    <color name="text_warning">#FFFFC107</color>
+    <color name="text_error">#FFFF5252</color>
+    
+    <!-- رنگ‌های نوار سلامت -->
+    <color name="health_high">#FF4CAF50</color>
+    <color name="health_medium">#FFFFC107</color>
+    <color name="health_low">#FFFF5722</color>
+    <color name="health_critical">#FFFF5252</color>
+    <color name="health_background">#80333333</color>
+    
+    <!-- رنگ‌های دکمه‌ها -->
+    <color name="button_normal">#FF00A8FF</color>
+    <color name="button_pressed">#FF0097E6</color>
+    <color name="button_disabled">#FF666666</color>
+    <color name="button_text">#FFFFFFFF</color>
+</resources>
