@@ -22,19 +22,103 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
-      
-    - name: Build Debug APK
+    - name: Create missing Gradle files
       run: |
-        ./gradlew assembleDebug
-        echo "✅ APK ساخته شد!"
+        # ایجاد فایل‌های ضروری Gradle
+        if [ ! -f "gradlew" ]; then
+          echo "📝 ایجاد gradlew..."
+          cat > gradlew << 'EOF'
+#!/bin/sh
+# This is a simple gradlew wrapper
+echo "Using system gradle"
+exec gradle "$@"
+EOF
+          chmod +x gradlew
+        fi
         
-    - name: List APK files
+        # ایجاد پوشه‌های ضروری
+        mkdir -p app/src/main/java/com/yourcompany/game
+        mkdir -p app/src/main/res/values
+        mkdir -p app/src/main/AndroidManifest.xml
+        
+    - name: Create basic AndroidManifest.xml
       run: |
-        find . -name "*.apk" -type f
-        echo "📁 محتوای پوشه app:"
-        ls -la app/build/outputs/apk/
+        cat > app/src/main/AndroidManifest.xml << 'EOF'
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.yourcompany.game">
+    
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="My 3D Game"
+        android:theme="@style/AppTheme">
+        
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
+EOF
+
+    - name: Create app build.gradle
+      run: |
+        cat > app/build.gradle << 'EOF'
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    compileSdk 34
+    namespace 'com.yourcompany.game'
+    
+    defaultConfig {
+        applicationId "com.yourcompany.game"
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+    
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+        }
+    }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+}
+EOF
+
+    - name: Build APK
+      run: |
+        echo "🏗️ ساخت APK..."
+        ./gradlew assembleDebug --no-daemon
         
     - name: Upload APK
       uses: actions/upload-artifact@v4
