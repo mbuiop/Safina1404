@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SpaceShip Galaxy Wars</string>
+    <string name="game_title">SpaceShip Galaxy Wars</string>
+    <string name="play_button">شروع بازی</string>
+    <string name="continue_button">ادامه بازی</string>
+    <string name="settings_button">تنظیمات</string>
+    <string name="exit_button">خروج</string>
+    <string name="level">مرحله %d</string>
+    <string name="score">امتیاز: %s</string>
+    <string name="coins">سکه: %s</string>
+    <string name="lives">جان: %d</string>
+    <string name="game_over">پایان بازی</string>
+    <string name="level_complete">مرحله تکمیل شد!</string>
+    <string name="new_high_score">رکورد جدید!</string>
+    <string name="pause">توقف</string>
+    <string name="resume">ادامه</string>
+    <string name="restart">شروع مجدد</string>
+    <string name="main_menu">منوی اصلی</string>
+    
+    <!-- ارتقاها -->
+    <string name="upgrade_speed">سرعت سفینه</string>
+    <string name="upgrade_health">سلامت سفینه</string>
+    <string name="upgrade_weapon">قدرت سلاح</string>
+    <string name="upgrade_shield">ظرفیت محافظ</string>
+    <string name="upgrade_cost">هزینه: %s</string>
+    <string name="current_level">سطح %d</string>
+    
+    <!-- دستاوردها -->
+    <string name="achievement_unlocked">دستاورد باز شد!</string>
+    <string name="mission_completed">ماموریت تکمیل شد!</string>
+    
+    <!-- تنظیمات -->
+    <string name="settings_title">تنظیمات بازی</string>
+    <string name="sound_effects">صداهای بازی</string>
+    <string name="background_music">موسیقی پس‌زمینه</string>
+    <string name="vibration">لرزش</string>
+    <string name="graphics_quality">کیفیت گرافیک</string>
+    <string name="control_sensitivity">حساسیت کنترل</string>
+    <string name="language">زبان</string>
+    
+    <!-- کیفیت گرافیک -->
+    <string name="quality_low">پایین</string>
+    <string name="quality_medium">متوسط</string>
+    <string name="quality_high">بالا</string>
+    <string name="quality_ultra">فوق العاده</string>
+    
+    <!-- زبان‌ها -->
+    <string name="lang_persian">فارسی</string>
+    <string name="lang_english">English</string>
+    
+    <!-- پیام‌های بازی -->
+    <string name="warning_low_health">هشدار: سلامت سفینه پایین است!</string>
+    <string name="shield_activated">سیستم محافظ فعال شد</string>
+    <string name="shield_depleted">سیستم محافظ تخلیه شد</string>
+    <string name="powerup_collected">قدرت‌افزایی جمع‌آوری شد</string>
+    <string name="combo_x">combo x%d!</string>
+    <string name="perfect">عالی!</string>
+    <string name="excellent">درخشان!</string>
+    <string name="unbelievable">باورنکردنی!</string>
+</resources>
