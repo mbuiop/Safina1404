@@ -1,4 +1,4 @@
-name: Build Real Android Game
+name: Build Android Game
 
 on:
   push:
@@ -21,59 +21,20 @@ jobs:
     - name: Setup Android
       uses: android-actions/setup-android@v3
       
-    - name: Fix project structure
+    - name: Create gradlew file
       run: |
-        # ایجاد پوشه‌های ضروری
-        mkdir -p app/src/main/java/com/yourcompany/game
-        mkdir -p app/src/main/res/values
-        
-        # کپی فایل‌های جاوا به محل صحیح
-        cp *.java app/src/main/java/com/yourcompany/game/ 2>/dev/null || true
-        
-    - name: Create missing Android files
-      run: |
-        # ایجاد AndroidManifest.xml
-        cat > app/src/main/AndroidManifest.xml << 'EOF'
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yourcompany.game">
-    
-    <uses-permission android:name="android.permission.INTERNET" />
-    
-    <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="Safina 3D Game"
-        android:theme="@style/AppTheme">
-        
-        <activity
-            android:name="com.yourcompany.game.GameEngine"
-            android:exported="true"
-            android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
-</manifest>
+        cat > gradlew << 'EOF'
+#!/bin/sh
+gradle "$@"
 EOF
-
-        # ایجاد فایل strings.xml
-        cat > app/src/main/res/values/strings.xml << 'EOF'
-<resources>
-    <string name="app_name">Safina 3D Game</string>
-</resources>
-EOF
-
+        chmod +x gradlew
+        
     - name: Build APK
       run: |
-        echo "🏗️ ساختن APK واقعی..."
-        chmod +x gradlew
-        ./gradlew assembleDebug --stacktrace
+        ./gradlew assembleDebug
         
-    - name: Upload Real APK
+    - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: safina-game-apk
-        path: app/build/outputs/apk/debug/*.apk
+        name: game-apk
+        path: app/build/outputs/apk/debug/app-debug.apk
