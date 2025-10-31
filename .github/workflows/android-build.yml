@@ -1,35 +1,36 @@
-name: Android Game CI/CD
+name: Build 3D Android Game
 
 on:
   push:
     branches: [ main, develop ]
-  release:
-    types: [published]
-
-env:
-  UNITY_VERSION: '2022.3.21f1'
-  ANDROID_SDK_VERSION: '9477386'
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  build-unity-android:
-    name: Build Unity Android Game
+  build:
+    name: Build High Graphics 3D Game
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout repository
+    - name: Checkout project
       uses: actions/checkout@v4
       with:
         lfs: true
         
-    - name: Cache Unity modules
+    - name: Setup Unity
+      uses: game-ci/unity-setup@v4
+      with:
+        unity-version: 2022.3.21f1
+        
+    - name: Cache Library
       uses: actions/cache@v3
       with:
-        path: |
-          /opt/unity/Editor/Data/PlaybackEngines/AndroidPlayer
-          ~/.gradle/caches
-        key: ${{ runner.os }}-unity-android-${{ env.UNITY_VERSION }}
-        
-    - name: Build Unity Project (Android)
+        path: Library
+        key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+        restore-keys: |
+          Library-
+          
+    - name: Build Android APK
       uses: game-ci/unity-builder@v4
       env:
         UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -37,39 +38,13 @@ jobs:
         UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
       with:
         targetPlatform: Android
-        androidAppBundle: true
-        androidKeystoreName: user.keystore
-        androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE }}
-        androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
-        androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
-        androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
+        androidExportType: androidPackage
         
-    - name: Upload APK/AAB
+    - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: Android-Build
+        name: 3D-Game-APK
         path: build/
         retention-days: 30
-
-  deploy:
-    name: Deploy to Testing
-    runs-on: ubuntu-latest
-    needs: build-unity-android
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    
-    steps:
-    - name: Download build artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: Android-Build
-        
-    - name: Deploy to Firebase App Distribution
-      uses: wzieba/Firebase-Distribution-Github-Action@v1
-      with:
-        appId: ${{ secrets.FIREBASE_APP_ID }}
-        token: ${{ secrets.FIREBASE_TOKEN }}
-        groups: testers
-        file: "*.apk"
-
 
 
