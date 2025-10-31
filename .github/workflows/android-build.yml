@@ -26,7 +26,7 @@ steps:
       api-level: 34
       build-tools: 34.0.0
 
-  # If gradlew is inside android folder, change next two commands accordingly.
+  # If gradlew is inside android folder, add "cd android &&" before commands below.
   - name: Give execute permission to gradlew
     run: chmod +x gradlew
 
@@ -38,5 +38,7 @@ steps:
     with:
       name: game-debug
       path: app/build/outputs/apk/debug/app-debug.apk
+
+
 
 
