@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/space_dark"
+    android:orientation="vertical"
+    tools:context=".SpaceShipGame">
+
+    <!-- نمای بازی -->
+    <com.space.ship.game.GameEngine
+        android:id="@+id/gameEngine"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- رابط کاربری بازی (HUD) -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/hud_margin">
+
+        <!-- اطلاعات سطح و امتیاز -->
+        <LinearLayout
+            android:id="@+id/hudTopLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/level"
+                android:textAppearance="@style/TextAppearance.GameHUD"
+                android:textColor="@color/text_primary" />
+
+            <TextView
+                android:id="@+id/textPlanets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PLANETS: 20/20"
+                android:textAppearance="@style/TextAppearance.GameHUD"
+                android:textColor="@color/text_primary" />
+
+        </LinearLayout>
+
+        <!-- اطلاعات امتیاز و سکه -->
+        <LinearLayout
+            android:id="@+id/hudTopRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:gravity="end">
+
+            <TextView
+                android:id="@+id/textScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/score"
+                android:textAppearance="@style/TextAppearance.GameHUD"
+                android:textColor="@color/text_primary" />
+
+            <TextView
+                android:id="@+id/textCoins"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/coins"
+                android:textAppearance="@style/TextAppearance.GameHUD"
+                android:textColor="@color/text_primary" />
+
+        </LinearLayout>
+
+        <!-- نوار سلامت -->
+        <LinearLayout
+            android:id="@+id/hudBottomRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:gravity="end">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SHIELD"
+                android:textAppearance="@style/TextAppearance.GameHUD"
+                android:textColor="@color/text_secondary" />
+
+            <ProgressBar
+                android:id="@+id/healthBar"
+                style="@style/Widget.GameProgressBar"
+                android:layout_width="@dimen/health_bar_width"
+                android:layout_height="@dimen/health_bar_height"
+                android:max="100"
+                android:progress="100" />
+
+        </LinearLayout>
+
+        <!-- نمایش جان‌ها -->
+        <LinearLayout
+            android:id="@+id/hudBottomLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LIVES"
+                android:textAppearance="@style/TextAppearance.GameHUD"
+                android:textColor="@color/text_secondary"
+                android:layout_marginEnd="@dimen/margin_small" />
+
+            <LinearLayout
+                android:id="@+id/livesContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- جان‌ها به صورت پویا اضافه می‌شوند -->
+                
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- دکمه توقف -->
+        <ImageButton
+            android:id="@+id/buttonPause"
+            android:layout_width="@dimen/icon_size_large"
+            android:layout_height="@dimen/icon_size_large"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_pause"
+            android:contentDescription="@string/pause" />
+
+    </RelativeLayout>
+
+    <!-- منوی توقف -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/pauseMenu"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/ui_surface"
+        app:cardCornerRadius="@dimen/menu_card_corner_radius"
+        app:cardElevation="@dimen/card_elevation">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_xlarge">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/pause"
+                android:textAppearance="@style/TextAppearance.GameTitle"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="@dimen/margin_large" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonResume"
+                style="@style/Widget.GameButton.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:text="@string/resume" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonRestart"
+                style="@style/Widget.GameButton.Secondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:text="@string/restart" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonMainMenu"
+                style="@style/Widget.GameButton.Secondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/main_menu" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- منوی پایان بازی -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/gameOverMenu"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/ui_surface"
+        app:cardCornerRadius="@dimen/menu_card_corner_radius"
+        app:cardElevation="@dimen/card_elevation">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_xlarge">
+
+            <TextView
+                android:id="@+id/textGameOver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/game_over"
+                android:textAppearance="@style/TextAppearance.GameTitle"
+                android:textColor="@color/text_error"
+                android:layout_marginBottom="@dimen/margin_medium" />
+
+            <TextView
+                android:id="@+id/textFinalScore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Score: 0"
+                android:textAppearance="@style/TextAppearance.GameSubtitle"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="@dimen/margin_large" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/margin_large">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="Level:"
+                    android:textAppearance="@style/TextAppearance.GameHUD"
+                    android:textColor="@color/text_secondary" />
+
+                <TextView
+                    android:id="@+id/textFinalLevel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="1"
+                    android:textAppearance="@style/TextAppearance.GameHUD"
+                    android:textColor="@color/text_primary" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/margin_large">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="Planets:"
+                    android:textAppearance="@style/TextAppearance.GameHUD"
+                    android:textColor="@color/text_secondary" />
+
+                <TextView
+                    android:id="@+id/textFinalPlanets"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="0"
+                    android:textAppearance="@style/TextAppearance.GameHUD"
+                    android:textColor="@color/text_primary" />
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonPlayAgain"
+                style="@style/Widget.GameButton.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:text="@string/restart" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonGameOverMainMenu"
+                style="@style/Widget.GameButton.Secondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/main_menu" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
