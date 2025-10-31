@@ -1,170 +1,46 @@
-name: Android Build and Release
+name: Build Android Game APK
 
 on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
-  release:
-    types: [published]
+push:
+branches: [ main, master ]
 
 jobs:
-  build:
-    name: Build Android APK
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+build:
+runs-on: ubuntu-latest
+name: Build Android Game
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+```
+steps:
+  - name: Checkout code
+    uses: actions/checkout@v4
 
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        api-level: 34
-        build-tools-version: 34.0.0
-        cmake-version: 3.22.1
-        ndk-version: 25.2.9519653
+  - name: Setup JDK 17
+    uses: actions/setup-java@v4
+    with:
+      java-version: "17"
+      distribution: "temurin"
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x ./gradlew
+  - name: Setup Android SDK
+    uses: android-actions/setup-android@v3
+    with:
+      api-level: 34
+      build-tools: 34.0.0
 
-    - name: Build Debug APK
-      run: ./gradlew assembleDebug
-      continue-on-error: false
+  # اگر فایل gradlew در پوشه android قرار دارد،
+  # این دو مرحله را تغییر بده به:
+  # run: cd android && chmod +x gradlew
+  - name: Give execute permission to gradlew
+    run: chmod +x gradlew
 
-    - name: Build Release APK
-      run: |
-        ./gradlew assembleRelease
-      env:
-        ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-        ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-        ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+  # اگر gradlew در پوشه android است:
+  # run: cd android && ./gradlew assembleDebug
+  - name: Build Debug APK
+    run: ./gradlew assembleDebug
 
-    - name: Upload Debug APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: spaceship-game-debug
-        path: app/build/outputs/apk/debug/app-debug.apk
-        retention-days: 7
+  - name: Upload Debug APK
+    uses: actions/upload-artifact@v4
+    with:
+      name: game-debug
+      path: app/build/outputs/apk/debug/app-debug.apk
+```
 
-    - name: Upload Release APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: spaceship-game-release
-        path: app/build/outputs/apk/release/app-release.apk
-        retention-days: 30
-
-    - name: Upload Mapping File
-      uses: actions/upload-artifact@v4
-      with:
-        name: mapping-file
-        path: app/build/outputs/mapping/release/mapping.txt
-        retention-days: 30
-
-  test:
-    name: Run Tests
-    runs-on: ubuntu-latest
-    needs: build
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-
-    - name: Run Unit Tests
-      run: ./gradlew testDebugUnitTest
-
-    - name: Run Instrumented Tests
-      run: ./gradlew connectedAndroidTest
-      continue-on-error: true
-
-    - name: Upload Test Results
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results
-        path: app/build/reports/
-        retention-days: 7
-
-  lint:
-    name: Code Quality Check
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-
-    - name: Run Lint
-      run: ./gradlew lintDebug
-
-    - name: Upload Lint Report
-      uses: actions/upload-artifact@v4
-      with:
-        name: lint-report
-        path: app/build/reports/lint/
-        retention-days: 7
-
-  release:
-    name: Create Release
-    runs-on: ubuntu-latest
-    needs: [build, test, lint]
-    if: github.event_name == 'release'
-    
-    steps:
-    - name: Download Release APK
-      uses: actions/download-artifact@v4
-      with:
-        name: spaceship-game-release
-        path: ./release-files
-
-    - name: Create GitHub Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: ./release-files/*
-        body: |
-          # SpaceShip Galaxy Wars 🚀
-          
-          جدیدترین نسخه بازی SpaceShip Galaxy Wars
-          
-          ## ویژگی‌های این نسخه:
-          - گرافیک سه بعدی فوق العاده
-          - سیستم ذرات پیشرفته
-          - هوش مصنوعی دشمنان
-          - سیارات متنوع با جزئیات
-          - سیستم قدرت‌آپگرید
-          - دستاوردها و مأموریت‌ها
-          
-          ## نحوه نصب:
-          1. فایل APK را دانلود کنید
-          2. در تنظیمات اندروید، "نصب از منابع ناشناس" را فعال کنید
-          3. فایل APK را نصب کنید
-          4. بازی را اجرا کنید و لذت ببرید!
-          
-          ## سیستم مورد نیاز:
-          - اندروید ۵.۰ (API 21) یا بالاتر
-          - حداقل ۲GB RAM
-          - ۱۰۰MB فضای خالی
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
